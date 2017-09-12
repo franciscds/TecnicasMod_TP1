@@ -5,10 +5,13 @@
 %  Aluno: Francis Carlos dos Santos    -%
 %  Matricula: 2012022167               -%
 %---------------------------------------%
-
+clear all;
 % Exercicio 1: Resposta de sistemas e métodos determinísticos
 K=1;
 tau=1;
+h2=1;
+h1=1;
+K0=1;
 sim('system_response_2016_2_parte1_mod')  
 R = ScopeData_1.signals(1).values;
 Y = ScopeData_1.signals(2).values;
@@ -108,6 +111,53 @@ axis tight
 MSE1_1 = mean((Y-y1).^2);
 MSE1_2 = mean((Y-y1d).^2);
 MSE1_3 = mean((Y-y2).^2);
-%% 
+%% 1.6
+h22=1;
+h12=1;
+K02=1
+sim('system_response_2016_2_parte2') 
+y22= ScopeData_2.signals(1).values;
+u2 =ScopeData_2.signals(2).values;
+t2 = ScopeData_2.time';
 
+figure,
+plot(t2,y22,'blue',t2,u2,'red','linewidth',2)
+box off
+title('Sinal sistema 2 ordem 1.6')
+xlabel('t')
+ylabel('y(t)')
+axis tight
+
+% estimativa de parametros
+k22 =1;
+tm2 = find(y22 >=1);
+tm2 = tm2(1)/100 + 16;
+% M1
+m12 = tm2*1/2;
+
+%mi
+mi2 = 1/(tm2);
+%lambda
+
+lambda2 = (tm2 - m12)*mi2;
+zeta2 = lambda2zeta(lambda2);
+eta2 = lambda2eta(lambda2);
+
+wn2 = (sec(zeta2)/sqrt(1 - zeta2.^2))*(1/(tm2 - m12));
+
+h12 = 2*zeta2*wn2;
+h22 = (wn2^2);
+K02 = k22*(wn2^2);
+
+% Plota comparação
+sim('system_response_2016_2_parte2');
+y23 =ScopeData_2.signals(3).values;
+figure,
+plot(t2,u2,'blue',t2,y23,'red','linewidth',2)
+box off
+xlabel('t')
+ylabel('y(t)')
+title('Comparação de Saida gerada e Saida calculada')
+legend('y(t) original','y(t) estimado')
+%% 1.8 Respondida ---
 

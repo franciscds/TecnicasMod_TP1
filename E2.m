@@ -52,7 +52,6 @@ figure
 stem(1:100,h(501:600),'Color',[0 0.3906 0],'linewidth',2); hold on; 
 stem(1:100,h_estimado,'red'); box off; 
 xlabel('amostras');
-set(gcf,'Position',[250 150 300 350])
 legend('h[n] original','h[n] estimado')
 title('h[n] original vs h[n] estimado')
 
